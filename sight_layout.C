@@ -1554,7 +1554,7 @@ void dbgStream::printSummaryFileContainerHTML(string absoluteFileName, string re
   sum << "\t<title>"<<title<<"</title>\n";
   sum << "\t<script src=\"script/hashtable.js\"></script>\n";
   sum << "\t<script src=\"script/skiplists.js\"></script>\n";
-  sum << "\t<script src=\"script/placement.js\"></script>\n";
+  // sum << "\t<script src=\"script/placement.js\"></script>\n";
   sum << "\t<script src=\"script/attributes.js\"></script>\n";
   sum << "\t<script src=\"script/core.js\"></script>\n";
   sum << "\t<script src=\"script/orderedDivs.js\"></script>\n";
@@ -1597,7 +1597,7 @@ void dbgStream::printDetailFileContainerHTML(string absoluteFileName, string tit
   det << "\t<script src=\"script/hashtable.js\"></script>\n";
   det << "\t<script src=\"script/skiplists.js\"></script>\n";
   det << "\t<script src=\"script/taffydb/taffy.js\"></script>\n";
-  det << "\t<script src=\"script/placement.js\"></script>\n";
+  // det << "\t<script src=\"script/placement.js\"></script>\n";
   det << "\t<script src=\"script/attributes.js\"></script>\n";
   det << "\t<script src=\"script/core.js\"></script>\n";
   det << "\t<script src=\"script/orderedDivs.js\"></script>\n";

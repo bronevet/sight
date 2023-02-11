@@ -32,7 +32,7 @@ WIDGETS := ${WIDGETS_O} ${WIDGETS_H}
 
 MAKE_DEFINES = ROOT_PATH=${ROOT_PATH} RAPL_ENABLED=${RAPL_ENABLED} REMOTE_ENABLED=${REMOTE_ENABLED} GDB_PORT=${GDB_PORT} OS=${OS} SIGHT_CFLAGS="${SIGHT_CFLAGS}" SIGHT_LINKFLAGS="${SIGHT_LINKFLAGS}" CC=${CC} CCC=${CCC} KULFI_ENABLED=${KULFI_ENABLED} LLVM32_SRC_PATH=${LLVM32_SRC_PATH} LLVM32_BUILD_PATH=${LLVM32_BUILD_PATH} LLVM32_INSTALL_PATH=${LLVM32_INSTALL_PATH}
 
-all: gsl papi libmsr synoptic \
+all: gsl papi libmsr \
      ${WIDGETS_COMMON_O} ${WIDGETS_COMMON_H} ${WIDGETS_STRUCTURE_O} ${WIDGETS_STRUCTURE_H} ${WIDGETS_LAYOUT_O} ${WIDGETS_LAYOUT_H}  \
      box \
      shellinabox/bin/shellinaboxd${EXE} mongoose/mongoose${EXE} graphviz/bin/dot${EXE} \
@@ -146,7 +146,7 @@ endif
 ifneq (${OS}, Cygwin)
 shellinabox/bin/shellinaboxd${EXE}:
 	rm -f shellinabox-2.14.tar.gz
-	cd widgets; wget --no-check-certificate https://shellinabox.googlecode.com/files/shellinabox-2.14.tar.gz
+	cd widgets; wget --no-check-certificate https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/shellinabox/shellinabox-2.14.tar.gz
 	cd widgets; tar -xf shellinabox-2.14.tar.gz
 	cd shellinabox-2.14; ./configure --prefix=${ROOT_PATH}/widgets/shellinabox
 	cd shellinabox-2.14; ${MAKE}
@@ -166,7 +166,7 @@ endif
 
 mongoose/mongoose${EXE}:
 	rm -f mongoose-3.8.tgz
-	wget --no-check-certificate https://mongoose.googlecode.com/files/mongoose-3.8.tgz
+	wget --no-check-certificate https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/mongoose/mongoose-3.8.tgz
 	tar -xf mongoose-3.8.tgz
 	rm mongoose-3.8.tgz
 	cd mongoose; ${MAKE} ${OS_MONGOOSE}
@@ -181,23 +181,24 @@ ifeq (${OS},Cygwin)
 	rm -r graphviz-2.24.zip release
 	chmod 755 graphviz/bin/*
 else
-	wget http://www.graphviz.org/pub/graphviz/stable/SOURCES/graphviz-2.24.0.tar.gz
-	tar -xf graphviz-2.24.0.tar.gz
-	cd graphviz-2.24.0; export CC=gcc; export CXX=g++; ./configure --prefix=${ROOT_PATH}/widgets/graphviz --disable-swig --disable-sharp --disable-go --disable-io --disable-java --disable-lua --disable-ocaml --disable-perl --disable-php --disable-python --disable-r --disable-ruby --disable-tcl --without-pic --without-efence --with-expat=yes --with-expatlibdir=${ROOT_PATH}/widgets/expat/lib --with-expatincludedir=${ROOT_PATH}/widgets/expat/include --without-devil --without-webp --without-poppler --without-ghostscript --without-visio --without-pangocairo --without-lasi --without-glitz --without-freetype2 --without-fontconfig --without-gdk-pixbuf --without-gtk --without-gtkgl --without-gtkglext --without-gts --without-glade --without-ming --without-qt --without-quartz --without-gdiplus --without-libgd --without-glut --without-sfdp --without-smyrna --without-ortho --without-digcola --without-ipsepcola --enable-static --disable-shared
-	cp graphviz_vmalloc_features graphviz-2.24.0/lib/vmalloc/features/vmalloc
-	cd graphviz-2.24.0; export CC=gcc; export CXX=g++; ${MAKE}
-	cd graphviz-2.24.0; export CC=gcc; export CXX=g++; ${MAKE} install
+	rm -rf graphviz-2.48.0.tar.gz
+	wget --no-check-certificate https://gitlab.com/api/v4/projects/4207231/packages/generic/graphviz-releases/2.48.0/graphviz-2.48.0.tar.gz
+	tar -xf graphviz-2.48.0.tar.gz
+	cd graphviz-2.48.0; export CC=gcc; export CXX=g++; ./configure --prefix=${ROOT_PATH}/widgets/graphviz --disable-swig --disable-sharp --disable-go --disable-io --disable-java --disable-lua --disable-ocaml --disable-perl --disable-php --disable-python --disable-r --disable-ruby --disable-tcl --without-pic --without-efence --with-expat=yes --with-expatlibdir=${ROOT_PATH}/widgets/expat/lib --with-expatincludedir=${ROOT_PATH}/widgets/expat/include --without-devil --without-webp --without-poppler --without-ghostscript --without-visio --without-pangocairo --without-lasi --without-glitz --without-freetype2 --without-fontconfig --without-gdk-pixbuf --without-gtk --without-gtkgl --without-gtkglext --without-gts --without-glade --without-ming --without-qt --without-quartz --without-gdiplus --without-libgd --without-glut --without-smyrna --without-ortho --without-digcola --without-ipsepcola --enable-static --disable-shared
+	#cp graphviz_vmalloc_features graphviz-2.48.0/lib/vmalloc/features/vmalloc
+	cd graphviz-2.48.0; export CC=gcc; export CXX=g++; ${MAKE} -j8
+	cd graphviz-2.48.0; export CC=gcc; export CXX=g++; ${MAKE} -j8 install
 	mv graphviz/bin/dot_static graphviz/bin/dot
-	rm -r graphviz-2.24.0 graphviz-2.24.0.tar.gz
+	rm -r graphviz-2.48.0 graphviz-2.48.0.tar.gz
 endif
 
 expat:
 ifneq (${OS},Cygwin)
-	wget http://downloads.sourceforge.net/expat/expat-2.0.1.tar.gz
-	tar -xf expat-2.0.1.tar.gz 
-	cd expat-2.0.1; ./configure --prefix=${ROOT_PATH}/widgets/expat
-	cd expat-2.0.1; make; make install
-	rm -r expat-2.0.1 expat-2.0.1.tar.gz
+	wget --no-check-certificate https://github.com/libexpat/libexpat/releases/download/R_2_5_0/expat-2.5.0.tar.gz
+	tar -xf expat-2.5.0.tar.gz 
+	cd expat-2.5.0; ./configure --prefix=${ROOT_PATH}/widgets/expat
+	cd expat-2.5.0; make; make install
+	rm -r expat-2.5.0 expat-2.5.0.tar.gz
 endif
 
 #ID3-Decision-Tree:
@@ -231,13 +232,21 @@ gsl:
 	cd gsl-1.9; make; make install
 	rm -r gsl-1.9 gsl-1.9.tar.gz
 
+#papi:
+#	rm -f papi-5.3.0.tar.gz
+#	wget --no-check-certificate http://icl.cs.utk.edu/projects/papi/downloads/papi-5.3.0.tar.gz
+#	tar -xf papi-5.3.0.tar.gz 
+#	cd papi-5.3.0/src; ./configure -prefix=${ROOT_PATH}/widgets/papi CC=gcc F77=gfortran --fail-on-warn=no; 
+#	cd papi-5.3.0/src; export CC=gcc; export F77=gfortran; make LDCONFIG=true CC=gcc F77=gfortran; make install
+#	rm -fr papi-5.3.0 papi-5.3.0.tar.gz
+
 papi:
-	rm -f papi-5.3.0.tar.gz
-	wget http://icl.cs.utk.edu/projects/papi/downloads/papi-5.3.0.tar.gz
-	tar -xf papi-5.3.0.tar.gz 
-	cd papi-5.3.0/src; ./configure -prefix=${ROOT_PATH}/widgets/papi CC=gcc F77=gfortran; 
-	cd papi-5.3.0/src; export CC=gcc; export F77=gfortran; make LDCONFIG=true CC=gcc F77=gfortran; make install
-	rm -fr papi-5.3.0 papi-5.3.0.tar.gz
+	rm -f
+	wget --no-check-certificate http://icl.utk.edu/projects/papi/downloads/papi-5.7.0.tar.gz
+	tar -xvzf papi-5.7.0.tar.gz
+	cd papi-5.7.0/src; ./configure --prefix=${ROOT_PATH}/widgets/papi
+	cd papi-5.7.0/src; export CC=gcc; LDCONFIG=true make; make install
+	rm -rf papi-5.7.0*
 
 ifeq (${RAPL_ENABLED}, 1)
 libmsr: libmsr/lib/libmsr.so
@@ -251,11 +260,11 @@ libmsr/lib/libmsr.so:
 #	cp libmsr_Makefile libmsr/src/Makefile
 	cd libmsr/src; make CC=${CC}
 
-synoptic:
-	wget http://synoptic.googlecode.com/files/synoptic-0.1.tar.gz
-	tar -xf synoptic-0.1.tar.gz
-	mv synoptic-0.1 synoptic
-	rm synoptic-0.1.tar.gz
+#synoptic:
+#	wget http://synoptic.googlecode.com/files/synoptic-0.1.tar.gz
+#	tar -xf synoptic-0.1.tar.gz
+#	mv synoptic-0.1 synoptic
+#	rm synoptic-0.1.tar.gz
 
 # JavaScript files from standard JS libraries that we wish to keep local copies of
 
@@ -314,14 +323,19 @@ jsPlumb:
 #	../getGithub https://github.com/sporritt/jsPlumb/archive/master.zip zip unzip
 #	mv jsPlumb-master jsPlumb
 	../getGithub https://github.com/sporritt/jsPlumb/archive/dev/1.6.2.zip zip unzip 1.6.2
-	mv jsPlumb-dev-1.6.2 jsPlumb
+	mv jsplumb-dev-1.6.2 jsPlumb
 
 clean:
 	rm -fr xdotool
 #	rm -rf ID3-Decision-Tree
 	../killP mongoose/mongoose
 	../killP shellinabox/bin/shellinaboxd
-	rm -rf *.o shellinabox* mongoose* noVNC graphviz papi gsl synoptic libmsr
+	rm -rf *.o shellinabox* mongoose* noVNC graphviz papi gsl libmsr
 	rm -f yui-min.js jquery-1.8.1.min.js underscore-min.js d3.v3.min.js d3.v3.js
 	rm -f jquery-1.9.1.min.js jquery-ui.css jquery-ui.js
 	rm -f Three.js Detector.js OrbitControls.js THREEx.WindowResize.js Stats.js
+	rm -f */*.o
+	rm -rf THREE
+	rm -rf expat
+	rm -rf jsPlumb
+	rm -f r71.zip

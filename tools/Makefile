@@ -25,10 +25,10 @@
 all: dtl callpath boost_1_55_0
 
 dtl-1.17.tar.gz:
-	wget --no-check-certificate https://dtl-cpp.googlecode.com/files/dtl-1.17.tar.gz
+	wget --no-check-certificate https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/dtl-cpp/dtl-1.17.tar.gz
 
 dtl: #dtl-1.17.tar.gz
-	wget --no-check-certificate https://dtl-cpp.googlecode.com/files/dtl-1.17.tar.gz
+	wget --no-check-certificate https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/dtl-cpp/dtl-1.17.tar.gz
 	rm -fr dtl-1.17
 	tar -xf dtl-1.17.tar.gz 
 	mv dtl-1.17 dtl

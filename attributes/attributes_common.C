@@ -37,6 +37,7 @@
 
 using namespace std;
 using namespace boost;
+#define shared_ptr boost::shared_ptr
 
 namespace sight {
 

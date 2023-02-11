@@ -116,5 +116,9 @@ SightVerbWrapper<Type> CONCAT(SightVerbWrapperVar, __COUNTER__) (cond? new Type 
 
 #define SIGHT_FI() }
 
+// Other aliases
+template<typename T>
+using shared_ptr = typename  boost::shared_ptr<T>;
+
 #endif
 
